@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements.  See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to You under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<configuration>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%-5level] %d{HH:mm:ss.SSS} [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${USER_HOME}/logs/stdout.log</File>
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${USER_HOME}/logs/%d{yyyy-MM-dd}/%d{yyyy-MM-dd}-%i.log.gz</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>512MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="check" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <discriminator>
+            <Key>table</Key>
+            <DefaultValue>check</DefaultValue>
+        </discriminator>
+        <sift>
+            <appender name="check_log_${table}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <File>${USER_HOME}/logs/${table}/check.log</File>
+                <rollingPolicy
+                        class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                    <!-- rollover daily -->
+                    <fileNamePattern>${USER_HOME}/logs/${table}/%d{yyyy-MM-dd}/check-%d{yyyy-MM-dd}-%i.log.gz</fileNamePattern>
+                    <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                        <maxFileSize>512MB</maxFileSize>
+                    </timeBasedFileNamingAndTriggeringPolicy>
+                    <maxHistory>60</maxHistory>
+                </rollingPolicy>
+                <encoder>
+                    <pattern>%msg</pattern>
+                </encoder>
+            </appender>
+        </sift>
+    </appender>
+
+    <appender name="read" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <discriminator>
+            <Key>table</Key>
+            <DefaultValue>read</DefaultValue>
+        </discriminator>
+        <sift>
+            <appender name="check_log_${table}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <File>${USER_HOME}/logs/${table}/read.log</File>
+                <rollingPolicy
+                        class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                    <!-- rollover daily -->
+                    <fileNamePattern>${USER_HOME}/logs/${table}/%d{yyyy-MM-dd}/read-%d{yyyy-MM-dd}-%i.log.gz</fileNamePattern>
+                    <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                        <maxFileSize>512MB</maxFileSize>
+                    </timeBasedFileNamingAndTriggeringPolicy>
+                    <maxHistory>60</maxHistory>
+                </rollingPolicy>
+                <encoder>
+                    <pattern>%msg</pattern>
+                </encoder>
+            </appender>
+        </sift>
+    </appender>
+
+    <logger name="com.ssxlulu.executor.check.RecorderChecker" additivity = "false">
+        <level value="info" />
+        <appender-ref ref="check"/>
+    </logger>
+
+    <logger name="com.ssxlulu.executor.reader.RecorderReader" additivity = "false">
+        <level value="info" />
+        <appender-ref ref="read"/>
+    </logger>
+
+    <root>
+        <level value="info" />
+        <appender-ref ref="console" />
+        <appender-ref ref="file"/>
+    </root>
+</configuration> 

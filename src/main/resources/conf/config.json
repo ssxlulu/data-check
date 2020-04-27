@@ -1,0 +1,15 @@
+{
+  "sourceDatasource": {
+    "jdbcUrl": "jdbc:mysql://127.0.0.1:3306/db1?serverTimezone=UTC&useSSL=false",
+    "username": "root",
+    "password": "123456"
+  },
+  "destinationDataSource": {
+    "jdbcUrl": "jdbc:mysql://127.0.0.1:3306/db2?serverTimezone=UTC&useSSL=false",
+    "username": "root",
+    "password": "123456"
+  },
+  "jobConfiguration": {
+    "concurrency": 3
+  }
+}
