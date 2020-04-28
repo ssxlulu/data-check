@@ -48,20 +48,24 @@ public class RecorderChecker extends AbstractExecutor {
     public void run() {
         start();
         MDC.put("table", tableMetaData.getTableName());
-        while (isRunning()) {
-            List<Record> extract = recorderReader.extract();
-            if (extract != null && extract.size() > 0) {
-                if (FinishedRecord.class.equals(extract.get(extract.size() - 1).getClass())) {
-                    check(extract.stream().limit(extract.size() - 1).collect(Collectors.toList()));
-                    break;
+        try {
+            while (isRunning()) {
+                List<Record> extract = recorderReader.extract();
+                if (extract != null && extract.size() > 0) {
+                    if (FinishedRecord.class.equals(extract.get(extract.size() - 1).getClass())) {
+                        check(extract.stream().limit(extract.size() - 1).collect(Collectors.toList()));
+                        break;
+                    }
+                    check(extract);
                 }
-                check(extract);
             }
+        } finally {
+            stop();
+            recorderReader.stop();
+            semaphore.release();
+            log.info("Table {} check finished.", tableMetaData.getTableName());
+            MDC.remove("table");
         }
-        stop();
-        semaphore.release();
-        log.info("Table {} check finished.", tableMetaData.getTableName());
-        MDC.remove("table");
     }
 
     private void check(List<Record> dataRecords) {
@@ -120,7 +124,7 @@ public class RecorderChecker extends AbstractExecutor {
             }
         } catch (SQLException e) {
             if (e.getMessage().contains("doesn't exist")) {
-                log.info("Destination database doesn't have table: " + tableName);
+                log.info("Destination database doesn't have table: {} {}", tableName, System.getProperty("line.separator"));
                 throw new DataCheckException("Destination database doesn't have table: " + tableName);
             }
             log.info(e.getMessage(), e);
