@@ -10,7 +10,7 @@ import java.util.concurrent.Semaphore;
  */
 public class RecorderCheckTaskFactory {
 
-    public static RecorderCheckTask createRecorderCheckTask(DataSourceManager dataSourceManager, CheckConfiguration checkConfiguration, String tableName, Semaphore semaphore) {
-        return new RecorderCheckTask(dataSourceManager, checkConfiguration, tableName, semaphore);
+    public static RecorderCheckTask createRecorderCheckTask(DataSourceManager dataSourceManager, CheckConfiguration checkConfiguration, String tableName, ExecuteEngine executeEngine) {
+        return new RecorderCheckTask(dataSourceManager, checkConfiguration, tableName, executeEngine);
     }
 }

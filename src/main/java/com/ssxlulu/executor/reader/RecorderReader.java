@@ -11,11 +11,9 @@ import com.ssxlulu.executor.AbstractExecutor;
 import com.ssxlulu.metadata.TableMetaData;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

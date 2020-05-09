@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Semaphore;
 import java.util.stream.Collectors;
 
 /**
@@ -41,8 +40,6 @@ public class RecorderChecker extends AbstractExecutor {
     private final TableMetaData tableMetaData;
 
     private final RecorderReader recorderReader;
-
-    private final Semaphore semaphore;
 
     @Override
     public void run() {
@@ -62,7 +59,6 @@ public class RecorderChecker extends AbstractExecutor {
         } finally {
             stop();
             recorderReader.stop();
-            semaphore.release();
             log.info("Table {} check finished.", tableMetaData.getTableName());
             MDC.remove("table");
         }

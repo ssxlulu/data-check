@@ -5,6 +5,7 @@ import com.ssxlulu.datasource.DataSourceManager;
 import com.ssxlulu.executor.check.RecorderChecker;
 import com.ssxlulu.executor.reader.RecorderReader;
 import com.ssxlulu.metadata.MetaDataManager;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
@@ -20,26 +21,24 @@ public class RecorderCheckTask {
 
     private final CheckConfiguration checkConfiguration;
 
+    @Getter
     private final String tableName;
 
-    private final Semaphore semaphore;
-
+    private final ExecuteEngine executeEngine;
+    @Getter
     private RecorderReader recorderReader;
 
+    @Getter
     private RecorderChecker recorderChecker;
 
     public void prepare() {
         MetaDataManager metaDataManager = new MetaDataManager(dataSourceManager.getDataSource(checkConfiguration.getSourceDatasource()));
         recorderReader = new RecorderReader(dataSourceManager, checkConfiguration.getSourceDatasource(), metaDataManager.getTableMetaData(tableName));
-        recorderChecker = new RecorderChecker(dataSourceManager, checkConfiguration.getDestinationDataSource(), metaDataManager.getTableMetaData(tableName), recorderReader, semaphore);
+        recorderChecker = new RecorderChecker(dataSourceManager, checkConfiguration.getDestinationDataSource(), metaDataManager.getTableMetaData(tableName), recorderReader);
     }
 
     @SneakyThrows
     public void start() {
-        semaphore.acquire();
-        Thread thread1 = new Thread(recorderReader, "Thread - Reader - " + recorderReader.getTableMetaData().getTableName());
-        thread1.start();
-        Thread thread2 = new Thread(recorderChecker, "Thread - Checker - " + recorderReader.getTableMetaData().getTableName());
-        thread2.start();
+        executeEngine.submitTask(this);
     }
 }
