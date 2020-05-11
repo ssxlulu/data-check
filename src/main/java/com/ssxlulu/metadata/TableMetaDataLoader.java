@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
+ * Table meta data loader.
+ *
  * @author ssxlulu
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

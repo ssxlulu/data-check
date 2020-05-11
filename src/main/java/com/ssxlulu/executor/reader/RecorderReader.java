@@ -6,11 +6,11 @@ import com.ssxlulu.common.model.FinishedRecord;
 import com.ssxlulu.common.model.Record;
 import com.ssxlulu.config.DatasourceConfiguration;
 import com.ssxlulu.datasource.DataSourceManager;
-import com.ssxlulu.exception.DataCheckException;
 import com.ssxlulu.executor.AbstractExecutor;
 import com.ssxlulu.metadata.TableMetaData;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 
@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
+ * Data record reader.
+ *
  * @author ssxlulu
  */
 @Slf4j
@@ -45,6 +47,7 @@ public class RecorderReader extends AbstractExecutor {
         read();
     }
 
+    @SneakyThrows
     private void read() {
         MDC.put("table", tableMetaData.getTableName());
         try (Connection conn = dataSourceManager.getDataSource(datasourceConfiguration).getConnection()) {
@@ -56,28 +59,29 @@ public class RecorderReader extends AbstractExecutor {
                 DataRecord dataRecord = new DataRecord(metaData.getColumnCount());
                 dataRecord.setTableName(tableMetaData.getTableName());
                 for (int i = 1; i <= metaData.getColumnCount(); i++) {
-                    dataRecord.addColumn(new Column(metaData.getColumnName(i), readValue(resultSet, i),  tableMetaData.isPrimaryKey(i - 1)));
+                    dataRecord.addColumn(new Column(metaData.getColumnName(i), readValue(resultSet, i), tableMetaData.isPrimaryKey(i - 1)));
                 }
                 queue.put(dataRecord);
             }
             queue.put(new FinishedRecord());
             stop();
             log.info("Table {} read finished.", tableMetaData.getTableName());
-        } catch (Exception e) {
-            throw new DataCheckException(e);
         }
     }
 
+    /**
+     * Extract data records.
+     *
+     * @return data records
+     */
     public List<Record> extract() {
         List<Record> dataRecords = new ArrayList<>();
         for (int i = 0; i < 2000; i++) {
             Record dataRecord = queue.poll();
             if (dataRecord != null) {
                 dataRecords.add(dataRecord);
-            } else if (!isRunning()) {
+            } else if (!isRunning() && queue.isEmpty()) {
                 break;
-            }else {
-                i--;
             }
         }
         return dataRecords;

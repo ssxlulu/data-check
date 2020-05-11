@@ -9,9 +9,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
-import java.util.concurrent.Semaphore;
-
 /**
+ * Data check task.
+ *
  * @author ssxlulu
  */
 @RequiredArgsConstructor
@@ -25,18 +25,25 @@ public class RecorderCheckTask {
     private final String tableName;
 
     private final ExecuteEngine executeEngine;
+
     @Getter
     private RecorderReader recorderReader;
 
     @Getter
     private RecorderChecker recorderChecker;
 
+    /**
+     * Prepare for data check task.
+     */
     public void prepare() {
         MetaDataManager metaDataManager = new MetaDataManager(dataSourceManager.getDataSource(checkConfiguration.getSourceDatasource()));
         recorderReader = new RecorderReader(dataSourceManager, checkConfiguration.getSourceDatasource(), metaDataManager.getTableMetaData(tableName));
         recorderChecker = new RecorderChecker(dataSourceManager, checkConfiguration.getDestinationDataSource(), metaDataManager.getTableMetaData(tableName), recorderReader);
     }
 
+    /**
+     * Start data check task.
+     */
     @SneakyThrows
     public void start() {
         executeEngine.submitTask(this);

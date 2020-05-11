@@ -1,6 +1,8 @@
 package com.ssxlulu.executor;
 
 /**
+ * Data check executor.
+ *
  * @author ssxlulu
  */
 public interface Executor extends Runnable {

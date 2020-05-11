@@ -15,6 +15,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Column meta data loader.
+ *
  * @author ssxlulu
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

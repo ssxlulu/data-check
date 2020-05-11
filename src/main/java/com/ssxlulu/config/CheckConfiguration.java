@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * DataCheck Configuraion.
+ *
  * @author ssxlulu
  */
 @Setter

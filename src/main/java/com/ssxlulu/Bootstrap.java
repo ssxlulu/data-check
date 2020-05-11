@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Hello world!
+ * Bootstrap.
  *
  */
 @Slf4j
@@ -25,9 +25,13 @@ public class Bootstrap {
 
     private static final Gson GSON = new Gson();
 
+    /**
+     * Main entry.
+     *
+     * @param args running args
+     */
     @SneakyThrows
-    public static void main( String[] args )
-    {
+    public static void main(final String[] args) {
         InputStream fileInputStream = Bootstrap.class.getResourceAsStream("/conf/config.json");
         InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
         CheckConfiguration checkConfiguration = GSON.fromJson(inputStreamReader, CheckConfiguration.class);

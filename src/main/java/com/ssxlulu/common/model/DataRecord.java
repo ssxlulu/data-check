@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Data record.
+ *
  * @author ssxlulu
  */
 @Setter
@@ -60,10 +62,20 @@ public class DataRecord implements Record {
         return columns.get(index);
     }
 
+    /**
+     * Get primary keys.
+     *
+     * @return primary keys
+     */
     public List<Column> getPrimaryKeys() {
         return primaryKeys;
     }
 
+    /**
+     * Get string format of data record.
+     *
+     * @return data record
+     */
     public String getStringRecord() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("[");
@@ -74,7 +86,4 @@ public class DataRecord implements Record {
         stringBuilder.append(StringUtils.join(columnValues, ",")).append("]");
         return stringBuilder.toString();
     }
-
-
-
 }

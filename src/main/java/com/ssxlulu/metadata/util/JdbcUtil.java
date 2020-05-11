@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
+ * Jdbc util.
+ *
  * @author ssxlulu
  */
 public class JdbcUtil {

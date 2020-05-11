@@ -1,6 +1,8 @@
 package com.ssxlulu.exception;
 
 /**
+ * DataCheckException.
+ *
  * @author ssxlulu
  */
 public class DataCheckException extends RuntimeException {

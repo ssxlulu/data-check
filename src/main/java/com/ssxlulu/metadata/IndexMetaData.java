@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 /**
+ * Index meta data.
+ *
  * @author ssxlulu
  */
 @RequiredArgsConstructor

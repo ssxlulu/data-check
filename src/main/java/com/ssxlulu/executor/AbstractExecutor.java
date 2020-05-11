@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * Abstract of Executor.
+ *
  * @author ssxlulu
  */
 public abstract class AbstractExecutor implements Executor {

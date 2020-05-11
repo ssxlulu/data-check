@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 /**
+ * Column.
+ *
  * @author ssxlulu
  */
 @RequiredArgsConstructor

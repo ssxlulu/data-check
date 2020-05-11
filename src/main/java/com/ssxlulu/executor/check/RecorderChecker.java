@@ -27,6 +27,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ * Data record checker.
+ *
  * @author ssxlulu
  */
 @Slf4j
@@ -58,13 +60,12 @@ public class RecorderChecker extends AbstractExecutor {
             }
         } finally {
             stop();
-            recorderReader.stop();
             log.info("Table {} check finished.", tableMetaData.getTableName());
             MDC.remove("table");
         }
     }
 
-    private void check(List<Record> dataRecords) {
+    private void check(final List<Record> dataRecords) {
         if (dataRecords == null || dataRecords.size() == 0) {
             return;
         }
@@ -87,7 +88,7 @@ public class RecorderChecker extends AbstractExecutor {
         }
     }
 
-    private List<DataRecord> queryRecord(List<DataRecord> dataRecords) {
+    private List<DataRecord> queryRecord(final List<DataRecord> dataRecords) {
         String tableName = tableMetaData.getTableName();
         Map<String, List<Object>> queryMap = new HashMap<>();
         boolean hasPrimaryKey = tableMetaData.hasPrimaryKey();
@@ -133,7 +134,7 @@ public class RecorderChecker extends AbstractExecutor {
         return resultSet.getObject(index);
     }
 
-    private void diff(DataRecord dataRecord1, DataRecord dataRecord2) {
+    private void diff(final DataRecord dataRecord1, final DataRecord dataRecord2) {
         if (!dataRecord1.equals(dataRecord2)) {
             log.info("Different records in table {} , source record: {} {} destination record: {} {}",
                     dataRecord1.getTableName(),

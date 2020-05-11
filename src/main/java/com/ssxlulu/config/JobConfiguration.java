@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
+ * Job configuration.
+ *
  * @author ssxlulu
  */
 @AllArgsConstructor

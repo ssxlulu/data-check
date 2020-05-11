@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.HashSet;
 
 /**
+ * Index meta data loader.
+ *
  * @author ssxlulu
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

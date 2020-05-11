@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Meta data manager.
+ *
  * @author ssxlulu
  */
 @RequiredArgsConstructor

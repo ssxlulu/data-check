@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * Data source manager.
+ *
  * @author ssxlulu
  */
 public class DataSourceManager {

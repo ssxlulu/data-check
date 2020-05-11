@@ -6,6 +6,8 @@ import com.zaxxer.hikari.HikariDataSource;
 import javax.sql.DataSource;
 
 /**
+ * Data source factory.
+ *
  * @author ssxlulu
  */
 public class DataSourceFactory {

@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Table meta data.
+ *
  * @author ssxlulu
  */
 @Getter
@@ -96,10 +98,20 @@ public class TableMetaData {
         return columns.get(columnNames.get(columnIndex)).isPrimaryKey();
     }
 
+    /**
+     * Weather has primary key.
+     *
+     * @return true if table has primary key, otherwise false
+     */
     public boolean hasPrimaryKey() {
         return primaryKeyColumns.size() > 0;
     }
 
+    /**
+     * Get primary key.
+     *
+     * @return primary key
+     */
     public String getPrimaryKey() {
         if (primaryKeyColumns.size() == 0) {
             return null;
